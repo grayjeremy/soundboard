@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Soundboard</title>
+  <meta name="description" content="A customizable, installable, offline-capable soundboard PWA." />
+
+  <!-- Theme / PWA metadata -->
+  <meta name="theme-color" content="#6c5ce7" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- iOS home screen support -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Soundboard" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <!-- Relative path stylesheet: works from any sub-path (e.g. GitHub Pages project sites) -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Skip link for keyboard users -->
+  <a class="skip-link" href="#sound-grid">Skip to sound buttons</a>
+
+  <div class="app-shell">
+
+    <header class="app-header">
+      <h1 class="app-title">🔊 Soundboard</h1>
+      <p class="app-subtitle">Tap a button to play a sound</p>
+
+      <div class="status-bar" aria-live="polite">
+        <span id="offline-status" class="status-pill" title="Network status">
+          <span class="status-dot"></span>
+          <span id="offline-status-text">Checking connection…</span>
+        </span>
+        <span id="install-status" class="status-pill" hidden>
+          <span class="status-dot"></span>
+          <span id="install-status-text">Not installed</span>
+        </span>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- Primary controls: stop all + install -->
+      <section class="controls-row" aria-label="Playback controls">
+        <button
+          id="stop-all-btn"
+          type="button"
+          class="stop-all-btn"
+          aria-label="Stop all sounds"
+        >
+          ⏹ Stop All Sounds
+        </button>
+
+        <button
+          id="install-btn"
+          type="button"
+          class="install-btn"
+          hidden
+          aria-label="Install Soundboard app to this device"
+        >
+          ⬇ Install App
+        </button>
+      </section>
+
+      <!-- iOS install instructions (shown only on iOS Safari where beforeinstallprompt is unavailable) -->
+      <p id="ios-install-hint" class="ios-hint" hidden>
+        📱 To install: tap <strong>Share</strong> then <strong>Add to Home Screen</strong>.
+      </p>
+
+      <!-- Error / status messages announced to assistive tech -->
+      <div id="error-message" class="error-banner" role="alert" aria-live="assertive" hidden></div>
+
+      <!-- Dynamically generated sound buttons -->
+      <section aria-label="Sound buttons">
+        <div id="sound-grid" class="sound-grid"></div>
+      </section>
+
+      <!-- Settings panel -->
+      <section class="settings-panel" aria-label="Settings">
+        <button
+          id="settings-toggle"
+          type="button"
+          class="settings-toggle"
+          aria-expanded="false"
+          aria-controls="settings-body"
+        >
+          ⚙ Settings
+        </button>
+
+        <div id="settings-body" class="settings-body" hidden>
+
+          <div class="setting-row">
+            <label for="volume-slider">Master Volume</label>
+            <input
+              type="range"
+              id="volume-slider"
+              min="0"
+              max="100"
+              step="1"
+              value="100"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            />
+            <span id="volume-value" class="volume-value">100%</span>
+          </div>
+
+          <div class="setting-row">
+            <label for="multi-sound-toggle">Allow Multiple Sounds</label>
+            <input type="checkbox" id="multi-sound-toggle" role="switch" aria-checked="false" />
+          </div>
+
+          <div class="setting-row">
+            <label for="loop-toggle">Loop Current Sound</label>
+            <input type="checkbox" id="loop-toggle" role="switch" aria-checked="false" />
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <p>Built with HTML, CSS &amp; vanilla JavaScript · Works fully offline</p>
+    </footer>
+
+  </div>
+
+  <!-- Reusable <audio> element templates are created dynamically in app.js -->
+  <script src="app.js"></script>
+</body>
+</html>

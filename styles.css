@@ -1,0 +1,456 @@
+/* =========================================================================
+   Soundboard — styles.css
+   All customizable design tokens live in :root as CSS variables.
+   Dark mode is handled automatically via prefers-color-scheme.
+   Motion is reduced automatically via prefers-reduced-motion.
+   ========================================================================= */
+
+:root {
+  /* ---- Colors (light theme) ---- */
+  --color-bg: #f4f5f9;
+  --color-surface: #ffffff;
+  --color-text: #1b1c22;
+  --color-text-muted: #5a5d6b;
+  --color-primary: #6c5ce7;
+  --color-primary-hover: #5a4bd1;
+  --color-primary-active: #4b3fc0;
+  --color-accent: #00b894;
+  --color-danger: #e74c3c;
+  --color-danger-hover: #c0392b;
+  --color-border: #e2e3ec;
+  --color-playing: #00b894;
+  --color-focus-ring: #ffb400;
+
+  /* ---- Spacing scale ---- */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+
+  /* ---- Border radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-round: 999px;
+
+  /* ---- Typography ---- */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-title: clamp(1.75rem, 4vw, 2.5rem);
+  --font-size-subtitle: 1rem;
+  --font-size-button: 1.05rem;
+
+  /* ---- Animation ---- */
+  --speed-fast: 100ms;
+  --speed-normal: 200ms;
+  --speed-slow: 400ms;
+  --easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ---- Layout ---- */
+  --max-content-width: 1100px;
+  --button-min-height: 120px;
+}
+
+/* Dark mode overrides — all values reference the same variable names */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #14151a;
+    --color-surface: #1f2027;
+    --color-text: #f2f2f7;
+    --color-text-muted: #a2a4b3;
+    --color-primary: #8a7bf3;
+    --color-primary-hover: #9d8ff5;
+    --color-primary-active: #7666e0;
+    --color-border: #2b2c36;
+    --color-playing: #2ecc9c;
+  }
+}
+
+/* Respect reduced motion preference: neutralize animation/transition speeds */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --speed-fast: 0ms;
+    --speed-normal: 0ms;
+    --speed-slow: 0ms;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================================
+   Base / reset
+   ========================================================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Visible focus ring everywhere for keyboard users; never suppressed */
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: var(--space-md);
+  top: var(--space-md);
+}
+
+/* =========================================================================
+   Layout shell
+   ========================================================================= */
+
+.app-shell {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.app-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.app-title {
+  font-size: var(--font-size-title);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  font-size: var(--font-size-subtitle);
+  color: var(--color-text-muted);
+}
+
+/* ---- Status bar ---- */
+.status-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-round);
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: var(--color-danger);
+  flex-shrink: 0;
+}
+
+.status-pill.is-online .status-dot { background: var(--color-accent); }
+.status-pill.is-offline .status-dot { background: var(--color-danger); }
+.status-pill.is-installed .status-dot { background: var(--color-accent); }
+
+/* =========================================================================
+   Controls row (Stop All + Install)
+   ========================================================================= */
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+.stop-all-btn,
+.install-btn {
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-xl);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--speed-fast) var(--easing), background-color var(--speed-normal) var(--easing);
+  min-height: 60px;
+}
+
+.stop-all-btn {
+  background: var(--color-danger);
+  color: #fff;
+  flex: 1 1 260px;
+}
+.stop-all-btn:hover { background: var(--color-danger-hover); }
+.stop-all-btn:active { transform: scale(0.97); }
+
+.install-btn {
+  background: var(--color-primary);
+  color: #fff;
+  flex: 1 1 200px;
+}
+.install-btn:hover { background: var(--color-primary-hover); }
+.install-btn:active { transform: scale(0.97); }
+
+.ios-hint {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* =========================================================================
+   Error banner
+   ========================================================================= */
+
+.error-banner {
+  background: #ffe8e6;
+  color: #7a1f16;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .error-banner {
+    background: #3a1c1c;
+    color: #ffb3ac;
+  }
+}
+
+/* =========================================================================
+   Sound button grid
+   ========================================================================= */
+
+.sound-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-md);
+}
+
+.sound-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: var(--button-min-height);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: var(--space-md);
+  text-align: center;
+  user-select: none;
+  transition:
+    transform var(--speed-fast) var(--easing),
+    box-shadow var(--speed-normal) var(--easing),
+    border-color var(--speed-normal) var(--easing),
+    background-color var(--speed-normal) var(--easing);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.sound-btn:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Pressed animation — works for mouse, touch, and keyboard activation */
+.sound-btn:active,
+.sound-btn.is-pressed {
+  transform: scale(0.94);
+}
+
+.sound-btn .sound-icon {
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+.sound-btn .sound-name {
+  font-size: var(--font-size-button);
+  font-weight: 600;
+  word-break: break-word;
+}
+
+/* Playing indicator */
+.sound-btn .playing-indicator {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-playing);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity var(--speed-normal) var(--easing), transform var(--speed-normal) var(--easing);
+}
+
+.sound-btn[aria-pressed="true"] {
+  border-color: var(--color-playing);
+  background: color-mix(in srgb, var(--color-playing) 12%, var(--color-surface));
+}
+
+.sound-btn[aria-pressed="true"] .playing-indicator {
+  opacity: 1;
+  transform: scale(1);
+  animation: pulse 1.2s var(--easing) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-playing) 45%, transparent); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* Error state */
+.sound-btn[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+/* =========================================================================
+   Settings panel
+   ========================================================================= */
+
+.settings-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.settings-toggle {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: var(--space-md);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.settings-body {
+  padding: 0 var(--space-md) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.setting-row label {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.setting-row input[type="range"] {
+  flex: 1 1 auto;
+  accent-color: var(--color-primary);
+}
+
+.setting-row input[type="checkbox"] {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--color-primary);
+}
+
+.volume-value {
+  min-width: 3.5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+/* =========================================================================
+   Footer
+   ========================================================================= */
+
+.app-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  padding-top: var(--space-md);
+}
+
+/* =========================================================================
+   Responsive tweaks
+   ========================================================================= */
+
+@media (min-width: 700px) {
+  .sound-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .sound-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .controls-row {
+    flex-direction: column;
+  }
+  .stop-all-btn,
+  .install-btn {
+    flex: 1 1 auto;
+  }
+}
