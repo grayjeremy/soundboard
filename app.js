@@ -15,18 +15,10 @@
 
 /* -------------------------------------------------------------------------
  * 1. SOUND CONFIGURATION
- *    Edit this array to customize the soundboard. Order here = order shown.
+ *    The `sounds` array is defined in sounds.js (loaded before this file
+ *    in index.html) so it can be edited independently of app logic.
+ *    Edit sounds.js to add, remove, or reorder sounds.
  * ---------------------------------------------------------------------- */
-const sounds = [
-  { id: 'airhorn', name: 'Air Horn', icon: '📣', file: 'sounds/airhorn.wav' },
-  { id: 'bell', name: 'Bell', icon: '🔔', file: 'sounds/bell.wav' },
-  { id: 'clap', name: 'Clap', icon: '👏', file: 'sounds/clap.wav' },
-  { id: 'drum', name: 'Drum Hit', icon: '🥁', file: 'sounds/drum.wav' },
-  { id: 'laugh', name: 'Laugh', icon: '😂', file: 'sounds/laugh.wav' },
-  { id: 'siren', name: 'Siren', icon: '🚨', file: 'sounds/siren.wav' },
-  { id: 'whistle', name: 'Whistle', icon: '📯', file: 'sounds/whistle.wav' },
-  { id: 'ding', name: 'Ding', icon: '✨', file: 'sounds/ding.wav' },
-];
 
 /* -------------------------------------------------------------------------
  * 2. APPLICATION STATE
@@ -127,6 +119,11 @@ function getAudioElement(sound) {
   }
   const audio = new Audio(sound.file);
   audio.preload = 'auto';
+
+  // Safety net: catches decode errors, 404s, and other failures that occur
+  // outside of the play() promise (e.g. after playback has already started).
+  audio.addEventListener('error', () => handlePlaybackError(sound));
+
   state.audioPool.set(sound.id, audio);
   return audio;
 }
@@ -449,18 +446,7 @@ function registerServiceWorker() {
 }
 
 /* -------------------------------------------------------------------------
- * 13. GLOBAL AUDIO ERROR HANDLING (safety net)
- *     Ensures a broken/missing file for any sound never crashes the app,
- *     even outside of the direct play() promise rejection path.
- * ---------------------------------------------------------------------- */
-function installGlobalAudioErrorHandling() {
-  // Delegate: attach an error listener to each audio element as it's created.
-  const originalGetAudioElement = getAudioElement;
-  // (No override needed structurally; error listeners are added in getAudioElement itself.)
-}
-
-/* -------------------------------------------------------------------------
- * 14. INIT
+ * 13. INIT
  * ---------------------------------------------------------------------- */
 function init() {
   loadSettings();
