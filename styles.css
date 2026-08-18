@@ -87,6 +87,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -311,9 +315,11 @@ button {
   transform: scale(0.94);
 }
 
-.sound-btn .sound-icon {
-  font-size: 2.25rem;
-  line-height: 1;
+.sound-btn .sound-image {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
 }
 
 .sound-btn .sound-name {
@@ -361,7 +367,15 @@ button {
    Settings panel
    ========================================================================= */
 
-.settings-panel {
+.control-panels {
+  align-items: start;
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: 1fr;
+}
+
+.settings-panel,
+.custom-sounds {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -369,6 +383,9 @@ button {
 }
 
 .settings-toggle {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   text-align: left;
   background: transparent;
@@ -418,6 +435,154 @@ button {
   color: var(--color-text-muted);
 }
 
+.custom-sounds-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  justify-content: space-between;
+  padding: var(--space-md);
+  width: 100%;
+}
+
+.toggle-indicator {
+  transition: transform var(--speed-normal) var(--easing);
+}
+
+.custom-sounds-toggle[aria-expanded="true"] .toggle-indicator {
+  transform: rotate(180deg);
+}
+
+.settings-toggle[aria-expanded="true"] .toggle-indicator {
+  transform: rotate(180deg);
+}
+
+.custom-sounds-body {
+  padding: 0 var(--space-md) var(--space-md);
+}
+
+.custom-sounds-body > p,
+.local-sound-empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.custom-sound-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.custom-sound-form label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.sound-recorder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.field-label {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.recorder-controls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.recorder-controls button {
+  flex: 1;
+}
+
+.recorder-controls button:disabled,
+.custom-sound-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.recording-status {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.recording-status.is-recording {
+  color: var(--color-danger);
+  font-weight: 700;
+}
+
+.sound-recorder audio {
+  margin-top: var(--space-xs);
+  max-width: 100%;
+  width: 100%;
+}
+
+.custom-sound-form input,
+.custom-sound-form button,
+.remove-local-sound {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  padding: var(--space-sm);
+}
+
+.custom-sound-form input {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.custom-sound-form button {
+  align-self: end;
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.local-sound-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.local-sound-item {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.local-sound-details {
+  align-items: center;
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.local-sound-image {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.remove-local-sound {
+  background: transparent;
+  color: var(--color-danger);
+  cursor: pointer;
+}
+
 /* =========================================================================
    Footer
    ========================================================================= */
@@ -437,6 +602,8 @@ button {
   .sound-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
+
+
 }
 
 @media (min-width: 1000px) {
