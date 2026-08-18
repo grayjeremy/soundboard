@@ -1,4 +1,5 @@
 [
+  { "id": "mario", "name": "Mario Coin", "image": "images/sounds/mario.png", "icon": "", "file": "sounds/mario-coin.mp3" },
   { "id": "airhorn", "name": "Air Horn", "image": "images/sounds/airhorn.png", "icon": "", "file": "sounds/airhorn.wav" },
   { "id": "bell", "name": "Bell", "image": "images/sounds/bell.png", "icon": "", "file": "sounds/bell.wav" },
   { "id": "clap", "name": "Clap", "image": "images/sounds/clap.png", "icon": "", "file": "sounds/clap.wav" },
@@ -7,4 +8,5 @@
   { "id": "siren", "name": "Siren", "image": "images/sounds/siren.png", "icon": "", "file": "sounds/siren.wav" },
   { "id": "whistle", "name": "Whistle", "image": "images/sounds/whistle.png", "icon": "", "file": "sounds/whistle.wav" },
   { "id": "ding", "name": "Ding", "image": "images/sounds/ding.png", "icon": "", "file": "sounds/ding.wav" }
+
 ]
