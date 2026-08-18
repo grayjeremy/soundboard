@@ -1,6 +1,10 @@
 [
   { "id": "mario", "name": "Mario Coin", "image": "images/sounds/mario.png", "icon": "", "file": "sounds/mario-coin.mp3" },
-  { "id": "airhorn", "name": "Air Horn", "image": "images/sounds/airhorn.png", "icon": "", "file": "sounds/airhorn.wav" },
+  { "id": "taps", "name": "Taps", "image": "images/sounds/taps.png", "icon": "", "file": "sounds/taps-short.mp3" },  
+  { "id": "boing", "name": "Boing", "image": "images/sounds/boing.png", "icon": "", "file": "sounds/boing.mp3" },    
+  { "id": "dumber", "name": "Any Dumber", "image": "images/sounds/dumber.png", "icon": "", "file": "sounds/dumber.mp3" },
+  { "id": "airhorn", "name": "Air Horn", "image": "images/sounds/airhorn.png", "icon": "", "file": "sounds/airhorn.mp3" },
+    { "id": "astonished", "name": "Astonished", "image": "images/sounds/astonished.png", "icon": "", "file": "sounds/astonished.mp3" },
   { "id": "bell", "name": "Bell", "image": "images/sounds/bell.png", "icon": "", "file": "sounds/bell.wav" },
   { "id": "clap", "name": "Clap", "image": "images/sounds/clap.png", "icon": "", "file": "sounds/clap.wav" },
   { "id": "drum", "name": "Drum Hit", "image": "images/sounds/drum.png", "icon": "", "file": "sounds/drum.wav" },
