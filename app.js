@@ -234,6 +234,7 @@ function getAudioElement(sound) {
     : sound.file;
   const audio = new Audio(file);
   audio.preload = 'auto';
+  audio.addEventListener('error', () => handlePlaybackError(sound));
   if (sound.source === 'local') {
     state.audioObjectUrls.set(sound.id, file);
   }
