@@ -1,13 +1,14 @@
 {
   "name": "Soundboard",
   "short_name": "Soundboard",
-  "description": "A customizable, installable, offline-capable soundboard.",
-  "start_url": "./index.html",
+  "description": "A customizable soundboard that works offline.",
+  "id": "./",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
   "background_color": "#f4f5f9",
   "theme_color": "#6c5ce7",
+  "orientation": "any",
   "icons": [
     {
       "src": "icons/icon-192.png",

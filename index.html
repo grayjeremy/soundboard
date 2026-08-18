@@ -16,7 +16,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Soundboard" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
 
   <!-- Relative path stylesheet: works from any sub-path (e.g. GitHub Pages project sites) -->
   <link rel="stylesheet" href="styles.css" />
@@ -81,8 +81,9 @@
         <div id="sound-grid" class="sound-grid"></div>
       </section>
 
-      <!-- Settings panel -->
-      <section class="settings-panel" aria-label="Settings">
+      <div class="control-panels">
+        <!-- Settings panel -->
+        <section class="settings-panel" aria-label="Settings">
         <button
           id="settings-toggle"
           type="button"
@@ -90,7 +91,8 @@
           aria-expanded="false"
           aria-controls="settings-body"
         >
-          ⚙ Settings
+          <span>Settings</span>
+          <span class="toggle-indicator" aria-hidden="true">▾</span>
         </button>
 
         <div id="settings-body" class="settings-body" hidden>
@@ -123,6 +125,54 @@
         </div>
       </section>
 
+        <!-- Custom sounds panel -->
+        <section class="custom-sounds" aria-label="Custom sounds">
+          <button
+            id="custom-sounds-toggle"
+            type="button"
+            class="custom-sounds-toggle"
+            aria-expanded="false"
+            aria-controls="custom-sounds-body"
+          >
+            <span>Custom Sounds</span>
+            <span class="toggle-indicator" aria-hidden="true">▾</span>
+          </button>
+
+          <div id="custom-sounds-body" class="custom-sounds-body" hidden>
+            <p>Add audio from this device. Files stay in this browser and are available offline.</p>
+
+            <div class="custom-sound-form">
+              <label for="custom-sound-name">
+                Name
+                <input id="custom-sound-name" type="text" maxlength="40" placeholder="Defaults to filename" />
+              </label>
+              <label for="custom-sound-image">
+                Image
+                <input id="custom-sound-image" type="file" accept="image/png,image/jpeg,image/webp" />
+              </label>
+              <label for="custom-sound-file">
+                Audio file
+                <input id="custom-sound-file" type="file" accept="audio/*,.wav,.mp3,.ogg,.m4a,.aac,.flac,.webm" />
+              </label>
+
+              <div class="sound-recorder">
+                <span class="field-label">Or record audio</span>
+                <div class="recorder-controls">
+                  <button id="start-recording" type="button">● Record</button>
+                  <button id="stop-recording" type="button" disabled>■ Stop</button>
+                </div>
+                <span id="recording-status" class="recording-status" aria-live="polite">Ready to record (30 seconds max)</span>
+                <audio id="recording-preview" controls hidden></audio>
+              </div>
+
+              <button id="add-custom-sound" type="button">Add to this device</button>
+            </div>
+
+            <div id="local-sound-list" class="local-sound-list" aria-live="polite"></div>
+          </div>
+        </section>
+      </div>
+
     </main>
 
     <footer class="app-footer">
@@ -131,9 +181,6 @@
 
   </div>
 
-  <!-- sounds.js defines the `sounds` array — edit that file to customize -->
-  <!-- your soundboard. It must load before app.js, which consumes it.    -->
-  <script src="sounds.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
